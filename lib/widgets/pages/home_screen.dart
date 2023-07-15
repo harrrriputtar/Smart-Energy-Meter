@@ -1,10 +1,8 @@
-import 'dart:ffi';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '/widgets/pages/billing_details_screen.dart';
 import '/widgets/pages/itemBill.dart';
 import '/widgets/pages/switchingStatus_screen.dart';
 
@@ -68,13 +66,13 @@ class _homeScreenState extends State<homeScreen> {
     final value1 = (value.data() as dynamic);
     final val2 = value1["Total_Dict"] as Map;
     var t1 = value1["Total_No_Devices_On"].toString();
-    var t2 = value1["Total_Energy"].toString();
-    var t3 = value1["Total_Bill"].toString();
+    double t2 = value1["Total_Energy"];
+    double t3 = value1["Total_Bill"];
     print(total_on_device.toString());
     setState(() {
       total_on_device = t1;
-      total_energy = t2;
-      total_bill = t3;
+      total_energy = (t2.floor()).toString();
+      total_bill = (t3.floor()).toString();
       // item_bill = value1["Itemized_Bill"].toStringAsFixed(2);
       // total_bill = value1["Total_Bill"].toString();
       // On_dict = value1["On_dict"];
@@ -242,7 +240,7 @@ class _homeScreenState extends State<homeScreen> {
                                 Column(
                                   children: [
                                     Text(
-                                      total_energy.substring(0, 4),
+                                      total_energy.substring(0, 1),
                                       style: TextStyle(fontSize: 25),
                                     ),
                                     Text(
@@ -296,7 +294,7 @@ class _homeScreenState extends State<homeScreen> {
                                         width: 5,
                                       ),
                                       Text(
-                                        total_bill.substring(0, 3),
+                                        total_bill,
                                         style: TextStyle(fontSize: 25),
                                       ),
                                     ],
@@ -332,7 +330,7 @@ class _homeScreenState extends State<homeScreen> {
                     height: 80,
                     width: 350,
                     child: GridView.builder(
-                      scrollDirection: Axis.vertical,
+                      physics: NeverScrollableScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         childAspectRatio: 0.5,
                         crossAxisCount: 4,
